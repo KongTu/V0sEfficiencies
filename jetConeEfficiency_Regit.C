@@ -258,6 +258,7 @@ double la_YieldCal( TH1F* inputHist ){
 
 void jetConeEfficiency_Regit(){
 
+    //define the path to data:
 	TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
     TTree* theTree = ( TTree* )file->Get("v0analyzerNew/PFJet"); 
     TTree* KshortTree = ( TTree* )file->Get("v0analyzerNew/v0_Kshort");
@@ -432,7 +433,7 @@ void jetConeEfficiency_Regit(){
         
         }
 
-    for (int it = 0; it < nEvent; it++ ){
+    for (int it = 0; it < maxEvent; it++ ){
 
         theTree->GetEntry(it);
 
@@ -443,6 +444,9 @@ void jetConeEfficiency_Regit(){
                 if ( jet_pt[i] < 60 || TMath::Abs( jet_eta[i]) > 2.0 ) continue;
 
                 for (int x = 0; x < nK0short; x++){
+
+                    if ( ks_dlos[x] > 5 && ks_agl[x] > 0.999 && ks_dau1_nhit[x] > 3 && ks_dau2_nhit[x] > 3 && TMath::Abs(ks_dau1_dzos[x]) > 1 &&
+                        TMath::Abs(ks_dau1_dxyos[x]) > 1 && TMath::Abs(ks_dau2_dxyos[x]) > 1 && TMath::Abs(ks_dau2_dzos[x]) > 1 ){
                       
                     float delta_ks_eta = (jet_eta[i]) - (ks_eta[x]);
                     float delta_ks_phi = (jet_phi[i]) - (ks_phi[x]);
@@ -504,11 +508,15 @@ void jetConeEfficiency_Regit(){
                         
                         }
                     }
+                }
             
 
                 //Finding Lambda in Jet cone:
 
                     for(int x = 0; x < nLambda; x++){
+
+                    if ( la_dlos[x] > 5 && la_agl[x] > 0.999 && la_dau1_nhit[x] > 3 && la_dau2_nhit[x] > 3 && TMath::Abs(la_dau1_dzos[x]) > 1 &&
+                        TMath::Abs(la_dau1_dxyos[x]) > 1 && TMath::Abs(la_dau2_dxyos[x]) > 1 && TMath::Abs(la_dau2_dzos[x]) > 1 ){    
 
                     float delta_la_eta = (jet_eta[i]) - (la_eta[x]);
                     float delta_la_phi = (jet_phi[i]) - (la_phi[x]);
@@ -569,7 +577,8 @@ void jetConeEfficiency_Regit(){
                                 }
                         
                         }
-                    }   
+                    } 
+                    }  
             
             }
     
@@ -632,25 +641,25 @@ void jetConeEfficiency_Regit(){
 
         TCanvas* r1 = new TCanvas();
 
-        r1->Print("K0short_June26_hi.pdf[");
+        r1->Print("K0short_June26_new.pdf[");
         for (int p = 0; p < 10; p++){
 
             ks_yield[p] = ks_YieldCal( k0Hist[p] );
-            r1->Print("K0short_June26_hi.pdf");
+            r1->Print("K0short_June26_new.pdf");
 
         }
-        r1->Print("K0short_June26_hi.pdf]");
+        r1->Print("K0short_June26_new.pdf]");
 
 
         TCanvas* r2 = new TCanvas();
-        r2->Print("Lambda_June26_hi.pdf[");
+        r2->Print("Lambda_June26_new.pdf[");
         for(int p1 = 0; p1 < 10; p1++){
 
             la_yield[p1] = la_YieldCal( laHist[p1] );
-            r2->Print("Lambda_June26_hi.pdf");
+            r2->Print("Lambda_June26_new.pdf");
 
         }
-        r2->Print("Lambda_June26_hi.pdf]");
+        r2->Print("Lambda_June26_new.pdf]");
 
 
 //-----------------
