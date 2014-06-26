@@ -371,11 +371,12 @@ void jetConeEfficiency_Regit(){
     int maxEvent = theTree->GetEntries();
     int nEvent = 500000;
  
-    //define Histograms:
+//define Histograms:
 
-        //---------------
-        //define pt bins:
-        //---------------
+//---------------
+//define pt bins:
+//---------------
+    
         double ptbins[] = {0.7,1.0,1.4,1.8,2.2,2.8,3.6,4.6,6.0,9.0,12.0};
         double ptbinwidth[10] = {0.3,0.4,0.4,0.6,0.6,0.8,1.0,1.4,3.0,3.0};
 
@@ -384,15 +385,9 @@ void jetConeEfficiency_Regit(){
 
         TH1F* k0Hist[10];
         TH1F* laHist[10];
-
-        TH1F* genk0Hist[10];
-        TH1F* genlaHist[10];
-       
+    
         stringstream KSname;
         stringstream LAname;
-
-        stringstream genKSname;
-        stringstream genLAname;
 
         for (int nhist = 0; nhist < 10; nhist++){
 
@@ -402,12 +397,6 @@ void jetConeEfficiency_Regit(){
             LAname << "laHist_";
             LAname << nhist + 1;
 
-            genKSname << "genk0PtHist_";
-            genKSname << nhist + 1;
-
-            genLAname << "genlaPtHist_";
-            genLAname << nhist + 1;
-
             k0Hist[nhist] = new TH1F( KSname.str().c_str(),KSname.str().c_str(),240,0.44,0.56);
             k0Hist[nhist]->SetXTitle("mass (GeV/c^{2})");
             k0Hist[nhist]->SetYTitle("#counts");
@@ -415,21 +404,9 @@ void jetConeEfficiency_Regit(){
             laHist[nhist] = new TH1F( LAname.str().c_str(),LAname.str().c_str(),240,1.08,1.16);
             laHist[nhist]->SetXTitle("mass (GeV/c^{2})");
             laHist[nhist]->SetYTitle("#counts");
-
-            genk0Hist[nhist] = new TH1F( genKSname.str().c_str(),genKSname.str().c_str(),240,0.44,0.56);
-            genk0Hist[nhist]->SetXTitle("mass (GeV/c^{2})");
-            genk0Hist[nhist]->SetYTitle("#counts");
-
-            genlaHist[nhist] = new TH1F( genLAname.str().c_str(),genLAname.str().c_str(),240,1.08,1.16);
-            genlaHist[nhist]->SetXTitle("mass (GeV/c^{2})");
-            genlaHist[nhist]->SetYTitle("#counts");
             
-
             KSname.str("");
             LAname.str("");
-
-            genKSname.str("");
-            genLAname.str("");
         
         }
 
