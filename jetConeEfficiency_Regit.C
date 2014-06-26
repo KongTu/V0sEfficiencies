@@ -258,12 +258,8 @@ double la_YieldCal( TH1F* inputHist ){
 
 void jetConeEfficiency_Regit(){
 
-<<<<<<< HEAD
     //define the path to data:
 	TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
-=======
-    TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
->>>>>>> 51ae1ebc18380c72bcabb118231b3b5115dde7fe
     TTree* theTree = ( TTree* )file->Get("v0analyzerNew/PFJet"); 
     TTree* KshortTree = ( TTree* )file->Get("v0analyzerNew/v0_Kshort");
     TTree* LambdaTree = ( TTree* )file->Get("v0analyzerNew/v0_Lambda"); 
