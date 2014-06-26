@@ -13,3 +13,5 @@ In order to change the InputTag of V0s from different tracking algorithm, to cha
   
 
 The Ntuple is on Wei's MIT account: /export/d00/scratch/davidlw
+
+  If more than one people modify the file, you can use "git merge" instead of "git push"
