@@ -11,3 +11,5 @@ jetConeEfficiency_Regit.C:
    
 In order to change the InputTag of V0s from different tracking algorithm, to change the "v0analyzerNew" to "v0analyzerHI" as pp to Regit respectively.
   
+
+The Ntuple is on Wei's MIT account: /export/d00/scratch/davidlw
