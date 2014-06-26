@@ -256,27 +256,14 @@ double la_YieldCal( TH1F* inputHist ){
 
 }
 
-void jetConeEfficiency_Regit(){
+void HijingEfficiency(){
 
-<<<<<<< HEAD
-    //define the path to data:
-	TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
-=======
-    TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
->>>>>>> 51ae1ebc18380c72bcabb118231b3b5115dde7fe
-    TTree* theTree = ( TTree* )file->Get("v0analyzerNew/PFJet"); 
-    TTree* KshortTree = ( TTree* )file->Get("v0analyzerNew/v0_Kshort");
-    TTree* LambdaTree = ( TTree* )file->Get("v0analyzerNew/v0_Lambda"); 
-    TTree* genParticleTree = ( TTree* )file->Get("v0analyzerNew/GenParticle");
+    TFile* file = new TFile("~/Desktop/HIJING_June21_2014.root");
+    TTree* theTree = ( TTree* )file->Get("ana/v0_Kshort");
+    theTree->AddFriend("ana/v0_Lambda");
+    theTree->AddFriend("ana/GenParticle");
 
-    //v0analyzerNew is for the V0 inputTag from the pp standard tracking;
-    //v0analyzerHI is for Regit tracking;
-
-    //RECO variables:
-        float jet_pt[3000];
-        float jet_eta[3000];
-        float jet_phi[3000];
-        int nJets;
+//RECO vairiables:
 
         int nK0short;
         int nLambda;
@@ -313,73 +300,65 @@ void jetConeEfficiency_Regit(){
         float la_dlos[3000];
         float la_mass[3000];
 
-        theTree->SetBranchAddress( "jet_pt", &jet_pt );
-        theTree->SetBranchAddress( "jet_eta", &jet_eta );
-        theTree->SetBranchAddress( "jet_phi", &jet_phi );
-        theTree->SetBranchAddress( "nJets", &nJets );
-
-        KshortTree->SetBranchAddress( "N", &nK0short );
-        KshortTree->SetBranchAddress( "ks_phi", &ks_phi );
-        KshortTree->SetBranchAddress( "ks_eta", &ks_eta );
-        KshortTree->SetBranchAddress( "ks_pt", &ks_pt );
-        KshortTree->SetBranchAddress( "ks_dau1_dzos", &ks_dau1_dzos );
-        KshortTree->SetBranchAddress( "ks_dau2_dzos", &ks_dau2_dzos );
-        KshortTree->SetBranchAddress( "ks_dau1_dxyos", &ks_dau1_dxyos );
-        KshortTree->SetBranchAddress( "ks_dau2_dxyos", &ks_dau2_dxyos );
-        KshortTree->SetBranchAddress( "ks_dau1_nhit", &ks_dau1_nhit );
-        KshortTree->SetBranchAddress( "ks_dau2_nhit", &ks_dau2_nhit );
-        KshortTree->SetBranchAddress( "ks_agl", &ks_agl );
-        KshortTree->SetBranchAddress( "ks_dlos", &ks_dlos );    
-        KshortTree->SetBranchAddress( "ks_px", &ks_px );
-        KshortTree->SetBranchAddress( "ks_py", &ks_py );
-        KshortTree->SetBranchAddress( "ks_pz", &ks_pz );
-        KshortTree->SetBranchAddress( "ks_mass", &ks_mass );
+        theTree->SetBranchAddress( "N", &nK0short );
+        theTree->SetBranchAddress( "ks_phi", &ks_phi );
+        theTree->SetBranchAddress( "ks_eta", &ks_eta );
+        theTree->SetBranchAddress( "ks_pt", &ks_pt );
+        theTree->SetBranchAddress( "ks_dau1_dzos", &ks_dau1_dzos );
+        theTree->SetBranchAddress( "ks_dau2_dzos", &ks_dau2_dzos );
+        theTree->SetBranchAddress( "ks_dau1_dxyos", &ks_dau1_dxyos );
+        theTree->SetBranchAddress( "ks_dau2_dxyos", &ks_dau2_dxyos );
+        theTree->SetBranchAddress( "ks_dau1_nhit", &ks_dau1_nhit );
+        theTree->SetBranchAddress( "ks_dau2_nhit", &ks_dau2_nhit );
+        theTree->SetBranchAddress( "ks_agl", &ks_agl );
+        theTree->SetBranchAddress( "ks_dlos", &ks_dlos );    
+        theTree->SetBranchAddress( "ks_px", &ks_px );
+        theTree->SetBranchAddress( "ks_py", &ks_py );
+        theTree->SetBranchAddress( "ks_pz", &ks_pz );
+        theTree->SetBranchAddress( "ks_mass", &ks_mass );
         
-        LambdaTree->SetBranchAddress( "N1", &nLambda );
-        LambdaTree->SetBranchAddress( "la_px", &la_px );
-        LambdaTree->SetBranchAddress( "la_py", &la_py );
-        LambdaTree->SetBranchAddress( "la_pz", &la_pz );
-        LambdaTree->SetBranchAddress( "la_phi", &la_phi );
-        LambdaTree->SetBranchAddress( "la_eta", &la_eta );
-        LambdaTree->SetBranchAddress( "la_pt", &la_pt );
-        LambdaTree->SetBranchAddress( "la_dau1_dzos", &la_dau1_dzos );
-        LambdaTree->SetBranchAddress( "la_dau2_dzos", &la_dau2_dzos );
-        LambdaTree->SetBranchAddress( "la_dau1_dxyos", &la_dau1_dxyos );
-        LambdaTree->SetBranchAddress( "la_dau2_dxyos", &la_dau2_dxyos );
-        LambdaTree->SetBranchAddress( "la_dau1_nhit", &la_dau1_nhit );
-        LambdaTree->SetBranchAddress( "la_dau2_nhit", &la_dau2_nhit );
-        LambdaTree->SetBranchAddress( "la_agl", &la_agl );
-        LambdaTree->SetBranchAddress( "la_dlos", &la_dlos );
-        LambdaTree->SetBranchAddress( "la_mass", &la_mass );
-    
-    //GEN variables:
+        theTree->SetBranchAddress( "N1", &nLambda );
+        theTree->SetBranchAddress( "la_px", &la_px );
+        theTree->SetBranchAddress( "la_py", &la_py );
+        theTree->SetBranchAddress( "la_pz", &la_pz );
+        theTree->SetBranchAddress( "la_phi", &la_phi );
+        theTree->SetBranchAddress( "la_eta", &la_eta );
+        theTree->SetBranchAddress( "la_pt", &la_pt );
+        theTree->SetBranchAddress( "la_dau1_dzos", &la_dau1_dzos );
+        theTree->SetBranchAddress( "la_dau2_dzos", &la_dau2_dzos );
+        theTree->SetBranchAddress( "la_dau1_dxyos", &la_dau1_dxyos );
+        theTree->SetBranchAddress( "la_dau2_dxyos", &la_dau2_dxyos );
+        theTree->SetBranchAddress( "la_dau1_nhit", &la_dau1_nhit );
+        theTree->SetBranchAddress( "la_dau2_nhit", &la_dau2_nhit );
+        theTree->SetBranchAddress( "la_agl", &la_agl );
+        theTree->SetBranchAddress( "la_dlos", &la_dlos );
+        theTree->SetBranchAddress( "la_mass", &la_mass );
+
+//GEN variables:
 
         int nGen;
-        int pdg[3000];
-        float genP_pt[3000];
-        float genP_eta[3000];
-        float genP_phi[3000];
-        int mid[3000];
+        int pdg[50000];
+        int mid[50000];
+        float genP_pt[50000];
+        float genP_eta[50000];
+        float genP_phi[50000];
 
-        genParticleTree->SetBranchAddress("nGen", &nGen );
-        genParticleTree->SetBranchAddress("pdg", &pdg );
-        genParticleTree->SetBranchAddress("genP_mid", &mid);
-        genParticleTree->SetBranchAddress("genP_pt", &genP_pt );
-        genParticleTree->SetBranchAddress("genP_eta", &genP_eta );
-        genParticleTree->SetBranchAddress("genP_phi", &genP_phi );
-
-        theTree->AddFriend( KshortTree );
-        theTree->AddFriend( LambdaTree );
-        theTree->AddFriend( genParticleTree );
-
+        theTree->SetBranchAddress("nGen", &nGen );
+        theTree->SetBranchAddress("pdg", &pdg );
+        theTree->SetBranchAddress("genP_mid", &mid );
+        theTree->SetBranchAddress("genP_pt", &genP_pt );
+        theTree->SetBranchAddress("genP_eta", &genP_eta );
+        theTree->SetBranchAddress("genP_phi", &genP_phi );
+      
     int maxEvent = theTree->GetEntries();
-    int nEvent = 500000;
- 
-    //define Histograms:
+    int nEvent = 1000000;
 
-        //---------------
-        //define pt bins:
-        //---------------
+//define Histograms:
+
+//---------------
+//define pt bins:
+//---------------
+
         double ptbins[] = {0.7,1.0,1.4,1.8,2.2,2.8,3.6,4.6,6.0,9.0,12.0};
         double ptbinwidth[10] = {0.3,0.4,0.4,0.6,0.6,0.8,1.0,1.4,3.0,3.0};
 
@@ -437,233 +416,174 @@ void jetConeEfficiency_Regit(){
         
         }
 
-    for (int it = 0; it < maxEvent; it++ ){
+
+    for (int it = 0; it < nEvent; it++){
 
         theTree->GetEntry(it);
 
-        cout << "let's see the nEvent: " << it << endl;
+        cout << "#events: " << it << endl;
 
-            for (int i = 0; i < nJets; i++){
+        for (int x = 0; x < nK0short; x++){
 
-                if ( jet_pt[i] < 60 || TMath::Abs( jet_eta[i]) > 2.0 ) continue;
+            if ( ks_pt[x] > 0.7 && ks_pt[x] < 1.0 ){
 
-                for (int x = 0; x < nK0short; x++){
-
-                    if ( ks_dlos[x] > 5 && ks_agl[x] > 0.999 && ks_dau1_nhit[x] > 3 && ks_dau2_nhit[x] > 3 && TMath::Abs(ks_dau1_dzos[x]) > 1 &&
-                        TMath::Abs(ks_dau1_dxyos[x]) > 1 && TMath::Abs(ks_dau2_dxyos[x]) > 1 && TMath::Abs(ks_dau2_dzos[x]) > 1 ){
-                      
-                    float delta_ks_eta = (jet_eta[i]) - (ks_eta[x]);
-                    float delta_ks_phi = (jet_phi[i]) - (ks_phi[x]);
-
-                    float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
-                      
-                        if ( KSconeSize < 0.3 ) {
-
-
-                                if ( ks_pt[x] > 0.7 && ks_pt[x] < 1.0 ){
-
-                                    k0Hist[0]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 1.0 && ks_pt[x] < 1.4 ){
-
-                                    k0Hist[1]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 1.4 && ks_pt[x] < 1.8 ){
-
-                                    k0Hist[2]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 1.8 && ks_pt[x] < 2.2 ){
-
-                                    k0Hist[3]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 2.2 && ks_pt[x] < 2.8 ){
-
-                                    k0Hist[4]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 2.8 && ks_pt[x] < 3.6 ){
-
-                                    k0Hist[5]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 3.6 && ks_pt[x] < 4.6 ){
-
-                                    k0Hist[6]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 4.6 && ks_pt[x] < 6.0 ){
-
-                                    k0Hist[7]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 6.0 && ks_pt[x] < 9.0 ){
-
-                                    k0Hist[8]->Fill( ks_mass[x] );
-                                }
-
-                                if ( ks_pt[x] > 9.0 && ks_pt[x] < 12.0 ){
-
-                                    k0Hist[9]->Fill( ks_mass[x] );
-                                }
-                        
-                        }
-                    }
-                }
-            
-
-                //Finding Lambda in Jet cone:
-
-                    for(int x = 0; x < nLambda; x++){
-
-                    if ( la_dlos[x] > 5 && la_agl[x] > 0.999 && la_dau1_nhit[x] > 3 && la_dau2_nhit[x] > 3 && TMath::Abs(la_dau1_dzos[x]) > 1 &&
-                        TMath::Abs(la_dau1_dxyos[x]) > 1 && TMath::Abs(la_dau2_dxyos[x]) > 1 && TMath::Abs(la_dau2_dzos[x]) > 1 ){    
-
-                    float delta_la_eta = (jet_eta[i]) - (la_eta[x]);
-                    float delta_la_phi = (jet_phi[i]) - (la_phi[x]);
-
-                    float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
-
-                        if ( LAconeSize < 0.3 ){
-                            
-
-                                if ( la_pt[x] > 0.7 && la_pt[x] < 1.0 ){
-
-                                    laHist[0]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 1.0 && la_pt[x] < 1.4 ){
-
-                                    laHist[1]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 1.4 && la_pt[x] < 1.8 ){
-
-                                    laHist[2]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 1.8 && la_pt[x] < 2.2 ){
-
-                                    laHist[3]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 2.2 && la_pt[x] < 2.8 ){
-
-                                    laHist[4]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 2.8 && la_pt[x] < 3.6 ){
-
-                                    laHist[5]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 3.6 && la_pt[x] < 4.6 ){
-
-                                    laHist[6]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 4.6 && la_pt[x] < 6.0 ){
-
-                                    laHist[7]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 6.0 && la_pt[x] < 9.0 ){
-
-                                    laHist[8]->Fill( la_mass[x] );
-                                }
-
-                                if ( la_pt[x] > 9.0 && la_pt[x] < 12.0 ){
-
-                                    laHist[9]->Fill( la_mass[x] );
-                                }
-                        
-                        }
-                    } 
-                    }  
-            
+                k0Hist[0]->Fill( ks_mass[x] );
             }
-    
-            for (int y = 0; y < nJets; y++){
 
-                if ( jet_pt[y] < 60 || TMath::Abs( jet_eta[y] ) > 2.0 ) continue;
+            if ( ks_pt[x] > 1.0 && ks_pt[x] < 1.4 ){
 
-                for (int x = 0; x < nGen; x++){
-
-                    if ( pdg[x] == 310 ){
-        
-                         float delta_ks_eta = jet_eta[y] - genP_eta[x];
-                         float delta_ks_phi = jet_phi[y] - genP_phi[x];
-
-                         float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
-
-                             if ( KSconeSize < 0.3 ){
-
-                                h3->Fill( genP_pt[x] );
-                             }
-
-                    }
-
-                    if ( TMath::Abs(pdg[x]) == 3122 && TMath::Abs(mid[x])!= 3322 && TMath::Abs(mid[x])!= 3312 && TMath::Abs(mid[x])!= 3324 && TMath::Abs(mid[x])!= 3314 && TMath::Abs(mid[x])!= 3334 ){
-                          
-                         float delta_la_eta = jet_eta[y] - genP_eta[x];
-                         float delta_la_phi = jet_phi[y] - genP_phi[x];
-
-                         float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
-
-                             if ( LAconeSize < 0.3 ){
-
-                                h4->Fill( genP_pt[x] );
-
-                             }
-
-                    }
-
-                 }
-            
+                k0Hist[1]->Fill( ks_mass[x] );
             }
-    
+
+            if ( ks_pt[x] > 1.4 && ks_pt[x] < 1.8 ){
+
+                k0Hist[2]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 1.8 && ks_pt[x] < 2.2 ){
+
+                k0Hist[3]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 2.2 && ks_pt[x] < 2.8 ){
+
+                k0Hist[4]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 2.8 && ks_pt[x] < 3.6 ){
+
+                k0Hist[5]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 3.6 && ks_pt[x] < 4.6 ){
+
+                k0Hist[6]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 4.6 && ks_pt[x] < 6.0 ){
+
+                k0Hist[7]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 6.0 && ks_pt[x] < 9.0 ){
+
+                k0Hist[8]->Fill( ks_mass[x] );
+            }
+
+            if ( ks_pt[x] > 9.0 && ks_pt[x] < 12.0 ){
+
+                k0Hist[9]->Fill( ks_mass[x] );
+            }
+        }
+
+        for (int x = 0; x < nLambda; x++){
+
+            if ( la_pt[x] > 0.7 && la_pt[x] < 1.0 ){
+
+                laHist[0]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 1.0 && la_pt[x] < 1.4 ){
+
+                laHist[1]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 1.4 && la_pt[x] < 1.8 ){
+
+                laHist[2]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 1.8 && la_pt[x] < 2.2 ){
+
+                laHist[3]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 2.2 && la_pt[x] < 2.8 ){
+
+                laHist[4]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 2.8 && la_pt[x] < 3.6 ){
+
+                laHist[5]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 3.6 && la_pt[x] < 4.6 ){
+
+                laHist[6]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 4.6 && la_pt[x] < 6.0 ){
+
+                laHist[7]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 6.0 && la_pt[x] < 9.0 ){
+
+                laHist[8]->Fill( la_mass[x] );
+            }
+
+            if ( la_pt[x] > 9.0 && la_pt[x] < 12.0 ){
+
+                laHist[9]->Fill( la_mass[x] );
+            }
+        }
+
+        for (int y = 0; y < nGen; y++){
+
+            if ( pdg[y] == 310 ){
+
+                h3->Fill( genP_pt[y] );
+
+            }
+
+            if ( TMath::Abs(pdg[y]) == 3122 && TMath::Abs(mid[x]) != 3322 && TMath::Abs(mid[x]) != 3312 && TMath::Abs(mid[x]) != 3324 && TMath::Abs(mid[x]) != 3314 && TMath::Abs(mid[x]) != 3334 ){
+
+                h4->Fill( genP_pt[y] );
+            }
+
+        }
+
     }
-    
-     double ks_yield[10];
-     double la_yield[10];
-     double genKS_yield[10];
-     double genLA_yield[10];
 
-    //Obtain the yield from the pt distribution for genKS AND genLA:
-    
-        for (int i = 0; i < 10; i++){
+    double ks_yield[10];
+    double la_yield[10];
+    double genKS_yield[10];
+    double genLA_yield[10];
 
-            genKS_yield[i] = h3->GetBinContent(i+1);
-            genLA_yield[i] = h4->GetBinContent(i+1);
+//Obtain the yield from the pt distribution for genKS AND genLA:
 
-        } 
-     
-    //store K0short and Lambda pt RAW mass distribution:
+    for (int i = 0; i < 10; i++){
 
-        TCanvas* r1 = new TCanvas();
+        genKS_yield[i] = h3->GetBinContent(i+1);
+        genLA_yield[i] = h4->GetBinContent(i+1);
 
-        r1->Print("K0short_June26_new.pdf[");
-        for (int p = 0; p < 10; p++){
+    } 
+ 
+//store K0short and Lambda pt RAW mass distribution:
 
-            ks_yield[p] = ks_YieldCal( k0Hist[p] );
-            r1->Print("K0short_June26_new.pdf");
+    TCanvas* r1 = new TCanvas();
 
-        }
-        r1->Print("K0short_June26_new.pdf]");
+    r1->Print("K0short_June26_HIJING.pdf[");
+    for (int p = 0; p < 10; p++){
+
+        ks_yield[p] = ks_YieldCal( k0Hist[p] );
+        r1->Print("K0short_June26_HIJING.pdf");
+
+    }
+    r1->Print("K0short_June26_HIJING.pdf]");
 
 
-        TCanvas* r2 = new TCanvas();
-        r2->Print("Lambda_June26_new.pdf[");
-        for(int p1 = 0; p1 < 10; p1++){
+    TCanvas* r2 = new TCanvas();
 
-            la_yield[p1] = la_YieldCal( laHist[p1] );
-            r2->Print("Lambda_June26_new.pdf");
+    r2->Print("Lambda_June26_HIJING.pdf[");
+    for(int p1 = 0; p1 < 10; p1++){
 
-        }
-        r2->Print("Lambda_June26_new.pdf]");
+        la_yield[p1] = la_YieldCal( laHist[p1] );
+        r2->Print("Lambda_June26_HIJING.pdf");
+
+    }
+    r2->Print("Lambda_June26_HIJING.pdf]");
 
 
 //-----------------
@@ -679,7 +599,7 @@ void jetConeEfficiency_Regit(){
 
     for (int it = 0 ; it < 10; it++){
 
-   //replace ptbinwith[it] with genKS_yield[it]:
+    //replace ptbinwith[it] with genKS_yield[it]:
 
         temp[it] = ks_yield[it]/genKS_yield[it];
         h1->SetBinContent(it+1, temp[it] );
@@ -700,17 +620,17 @@ void jetConeEfficiency_Regit(){
 
     for (int is = 0; is < 10; is++){
 
-//replace ptbinwidth[is] with genLA_yield[is]:
+    //replace ptbinwidth[is] with genLA_yield[is]:
 
         temp1[is] = la_yield[is]/genLA_yield[is];
         h2->SetBinContent(is+1, temp1[is] );
     }
-    
+
     h2->SetMarkerStyle(21);
     h2->SetMarkerColor(kRed);
     h2->SetXTitle("P^{}_{T,V0} (GeV/c)");
     h2->SetYTitle("Efficiency");
-    h2->Draw("P same");
+    h2->Draw("Psame");
 
 
     TLegend *w1 = new TLegend(0.25,0.4,0.5,0.5);
@@ -718,5 +638,5 @@ void jetConeEfficiency_Regit(){
     w1->AddEntry(h2,"#Lambda/#bar{#Lambda}");
     w1->Draw("same");
 
-
+    
 }
