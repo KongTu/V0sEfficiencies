@@ -259,55 +259,57 @@ double la_YieldCal( TH1F* inputHist ){
 void jetConeEfficiency_Regit(){
 
     //define the path to data:
-	TFile* file = new TFile("~/Desktop/Kongwork/RegitPYTHIA80_JUNE24_ppCuts_2014.root");
-    TTree* theTree = ( TTree* )file->Get("v0analyzerNew/PFJet"); 
-    TTree* KshortTree = ( TTree* )file->Get("v0analyzerNew/v0_Kshort");
-    TTree* LambdaTree = ( TTree* )file->Get("v0analyzerNew/v0_Lambda"); 
-    TTree* genParticleTree = ( TTree* )file->Get("v0analyzerNew/GenParticle");
+	TFile* file = new TFile("/Users/kongkong/2014Research/ROOT_file/HiRegit/RegitPYTHIA80_JULY5_ppCuts_updates4_2014.root");
+    TTree* theTree = ( TTree* )file->Get("v0analyzerHI/PFJet"); 
+    TTree* KshortTree = ( TTree* )file->Get("v0analyzerHI/v0_Kshort");
+    TTree* LambdaTree = ( TTree* )file->Get("v0analyzerHI/v0_Lambda"); 
+    TTree* genParticleTree = ( TTree* )file->Get("v0analyzerHI/GenParticle");
 
     //v0analyzerNew is for the V0 inputTag from the pp standard tracking;
     //v0analyzerHI is for Regit tracking;
 
     //RECO variables:
-        float jet_pt[3000];
-        float jet_eta[3000];
-        float jet_phi[3000];
+        const MAX = 3000;
+
+        float jet_pt[MAX];
+        float jet_eta[MAX];
+        float jet_phi[MAX];
         int nJets;
 
         int nK0short;
         int nLambda;
 
-        float ks_eta[3000];
-        float ks_phi[3000];
-        float ks_pt[3000];
-        float ks_px[3000];
-        float ks_py[3000];
-        float ks_pz[3000];
-        float ks_dau1_dzos[3000];
-        float ks_dau2_dzos[3000];
-        float ks_dau1_dxyos[3000];
-        float ks_dau2_dxyos[3000];
-        float ks_dau1_nhit[3000];
-        float ks_dau2_nhit[3000];
-        float ks_agl[3000];
-        float ks_dlos[3000];
-        float ks_mass[3000];
+        float ks_eta[MAX];
+        float ks_phi[MAX];
+        float ks_pt[MAX];
+        float ks_px[MAX];
+        float ks_py[MAX];
+        float ks_pz[MAX];
+        float ks_dau1_dzos[MAX];
+        float ks_dau2_dzos[MAX];
+        float ks_dau1_dxyos[MAX];
+        float ks_dau2_dxyos[MAX];
+        float ks_dau1_nhit[MAX];
+        float ks_dau2_nhit[MAX];
+        float ks_agl[MAX];
+        float ks_dlos[MAX];
+        float ks_mass[MAX];
        
-        float la_px[3000];
-        float la_py[3000];
-        float la_pz[3000];
-        float la_eta[3000];
-        float la_phi[3000];
-        float la_pt[3000];
-        float la_dau1_dzos[3000];
-        float la_dau2_dzos[3000];
-        float la_dau1_dxyos[3000];
-        float la_dau2_dxyos[3000];
-        float la_dau1_nhit[3000];
-        float la_dau2_nhit[3000];
-        float la_agl[3000];
-        float la_dlos[3000];
-        float la_mass[3000];
+        float la_px[MAX];
+        float la_py[MAX];
+        float la_pz[MAX];
+        float la_eta[MAX];
+        float la_phi[MAX];
+        float la_pt[MAX];
+        float la_dau1_dzos[MAX];
+        float la_dau2_dzos[MAX];
+        float la_dau1_dxyos[MAX];
+        float la_dau2_dxyos[MAX];
+        float la_dau1_nhit[MAX];
+        float la_dau2_nhit[MAX];
+        float la_agl[MAX];
+        float la_dlos[MAX];
+        float la_mass[MAX];
 
         theTree->SetBranchAddress( "jet_pt", &jet_pt );
         theTree->SetBranchAddress( "jet_eta", &jet_eta );
@@ -351,11 +353,11 @@ void jetConeEfficiency_Regit(){
     //GEN variables:
 
         int nGen;
-        int pdg[3000];
-        float genP_pt[3000];
-        float genP_eta[3000];
-        float genP_phi[3000];
-        int mid[3000];
+        int pdg[MAX];
+        float genP_pt[MAX];
+        float genP_eta[MAX];
+        float genP_phi[MAX];
+        int mid[MAX];
 
         genParticleTree->SetBranchAddress("nGen", &nGen );
         genParticleTree->SetBranchAddress("pdg", &pdg );
@@ -428,7 +430,20 @@ void jetConeEfficiency_Regit(){
                     float delta_ks_eta = (jet_eta[i]) - (ks_eta[x]);
                     float delta_ks_phi = (jet_phi[i]) - (ks_phi[x]);
 
-                    float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+                    if ( delta_ks_phi > 3.14 ){
+
+                        float KSconeSize = sqrt((6.28 - delta_ks_phi)*(6.28 - delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+                    }
+                    else if ( delta_ks_phi < -3.14 ){
+
+                        float KSconeSize = sqrt((6.28 + delta_ks_phi)*(6.28 + delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+
+                    }
+                    else{
+
+                        float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+
+                    }
                       
                         if ( KSconeSize < 0.3 ) {
 
@@ -497,8 +512,21 @@ void jetConeEfficiency_Regit(){
 
                     float delta_la_eta = (jet_eta[i]) - (la_eta[x]);
                     float delta_la_phi = (jet_phi[i]) - (la_phi[x]);
+                        
+                    if ( delta_la_phi > 3.14 ){
 
-                    float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+                        float LAconeSize = sqrt((6.28 - delta_la_phi)*(6.28 - delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+                    }
+                    else if ( delta_la_phi < -3.14 ){
+
+                        float LAconeSize = sqrt((6.28 + delta_la_phi)*(6.28 + delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+
+                    }
+                    else{
+
+                        float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+
+                    }
 
                         if ( LAconeSize < 0.3 ){
                             
@@ -555,7 +583,7 @@ void jetConeEfficiency_Regit(){
                         
                         }
                     } 
-                    }  
+                }  
             
             }
     
@@ -567,15 +595,29 @@ void jetConeEfficiency_Regit(){
 
                     if ( pdg[x] == 310 ){
         
-                         float delta_ks_eta = jet_eta[y] - genP_eta[x];
-                         float delta_ks_phi = jet_phi[y] - genP_phi[x];
+                        float delta_ks_eta = jet_eta[y] - genP_eta[x];
+                        float delta_ks_phi = jet_phi[y] - genP_phi[x];
 
-                         float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+                        if ( delta_ks_phi > 3.14 ){
 
-                             if ( KSconeSize < 0.3 ){
+                            float KSconeSize = sqrt((6.28 - delta_ks_phi)*(6.28 - delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+                        }
+                        else if ( delta_ks_phi < -3.14 ){
+
+                            float KSconeSize = sqrt((6.28 + delta_ks_phi)*(6.28 + delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+
+                        }
+                        else{
+
+                            float KSconeSize = sqrt((delta_ks_phi)*(delta_ks_phi)+(delta_ks_eta)*(delta_ks_eta));
+
+                        }
+
+                            
+                            if ( KSconeSize < 0.3 ){
 
                                 h3->Fill( genP_pt[x] );
-                             }
+                            }
 
                     }
 
@@ -584,13 +626,26 @@ void jetConeEfficiency_Regit(){
                          float delta_la_eta = jet_eta[y] - genP_eta[x];
                          float delta_la_phi = jet_phi[y] - genP_phi[x];
 
-                         float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+                            if ( delta_la_phi > 3.14 ){
 
-                             if ( LAconeSize < 0.3 ){
+                                float LAconeSize = sqrt((6.28 - delta_la_phi)*(6.28 - delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+                            }
+                            else if ( delta_la_phi < -3.14 ){
 
-                                h4->Fill( genP_pt[x] );
+                                float LAconeSize = sqrt((6.28 + delta_la_phi)*(6.28 + delta_la_phi)+(delta_la_eta)*(delta_la_eta));
 
-                             }
+                            }
+                            else{
+
+                                float LAconeSize = sqrt((delta_la_phi)*(delta_la_phi)+(delta_la_eta)*(delta_la_eta));
+
+                            }
+
+                                if ( LAconeSize < 0.3 ){
+
+                                    h4->Fill( genP_pt[x] );
+
+                                }
 
                     }
 
@@ -618,25 +673,25 @@ void jetConeEfficiency_Regit(){
 
         TCanvas* r1 = new TCanvas();
 
-        r1->Print("K0short_June26_new.pdf[");
+        r1->Print("K0short_July7_HI_.pdf[");
         for (int p = 0; p < 10; p++){
 
             ks_yield[p] = ks_YieldCal( k0Hist[p] );
-            r1->Print("K0short_June26_new.pdf");
+            r1->Print("K0short_July7_HI_.pdf");
 
         }
-        r1->Print("K0short_June26_new.pdf]");
+        r1->Print("K0short_July7_HI_.pdf]");
 
 
         TCanvas* r2 = new TCanvas();
-        r2->Print("Lambda_June26_new.pdf[");
+        r2->Print("Lambda_July7_HI_.pdf[");
         for(int p1 = 0; p1 < 10; p1++){
 
             la_yield[p1] = la_YieldCal( laHist[p1] );
-            r2->Print("Lambda_June26_new.pdf");
+            r2->Print("Lambda_July7_HI_.pdf");
 
         }
-        r2->Print("Lambda_June26_new.pdf]");
+        r2->Print("Lambda_July7_HI_.pdf]");
 
 
 //-----------------
