@@ -10,6 +10,7 @@
 #include "TF1.h"
 #include "TH1.h"
 #include "TMath.h"
+#include <string>
 
 #include "TGraph.h"
 #include "TGraphErrors.h"
@@ -387,7 +388,7 @@ void jetConeEfficiency_Regit_check1(){
         theTree->AddFriend( genParticleTree );
 
     int maxEvent = theTree->GetEntries();
-    int nEvent = 100000;
+    int nEvent = 1000;
  
 //==================
 //define Histograms:
@@ -401,18 +402,18 @@ void jetConeEfficiency_Regit_check1(){
 
         for (int nhist = 0; nhist < 10; nhist++){
 
-            KSname << "k0Hist_";
+            KSname << "K^{0}_{s} dauTrack #DeltaR w.r.t jet axis_";
             KSname << nhist + 1;
 
-            LAname << "laHist_";
+            LAname << "#Lambda/#bar{#Lambda} dauTrack #DeltaR w.r.t jet axis__";
             LAname << nhist + 1;
 
-            k0Hist[nhist] = new TH1F( KSname.str().c_str(),KSname.str().c_str(),1000,0,10);
-            k0Hist[nhist]->SetXTitle("#deltaR ");
+            k0Hist[nhist] = new TH1F( KSname.str().c_str(),KSname.str().c_str(),200,0,1);
+            k0Hist[nhist]->SetXTitle("#DeltaR ");
             k0Hist[nhist]->SetYTitle("#counts");
 
-            laHist[nhist] = new TH1F( LAname.str().c_str(),LAname.str().c_str(),1000,0,10);
-            laHist[nhist]->SetXTitle("#deltaR");
+            laHist[nhist] = new TH1F( LAname.str().c_str(),LAname.str().c_str(),200,0,1);
+            laHist[nhist]->SetXTitle("#DeltaR");
             laHist[nhist]->SetYTitle("#counts");
             
             KSname.str("");
@@ -452,102 +453,102 @@ void jetConeEfficiency_Regit_check1(){
 
 
 
-                        if ( KSconeSize < 0.3 ){
+                    if ( KSconeSize < 0.3 ){
 
-                            float delta_ks1_eta = (jet_eta[i]) - (ks_dau1_eta[x]);
-                            float delta_ks1_phi = (jet_phi[i]) - (ks_dau1_phi[x]);
+                        float delta_ks1_eta = (jet_eta[i]) - (ks_dau1_eta[x]);
+                        float delta_ks1_phi = (jet_phi[i]) - (ks_dau1_phi[x]);
 
-                            if ( delta_ks1_phi > 3.14 ){
+                        if ( delta_ks1_phi > 3.14 ){
 
-                                float KS1coneSize1 = sqrt((6.28 - delta_ks1_phi)*(6.28 - delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
-                            }
-                            else if ( delta_ks1_phi < -3.14 ){
+                            float KS1coneSize1 = sqrt((6.28 - delta_ks1_phi)*(6.28 - delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
+                        }
+                        else if ( delta_ks1_phi < -3.14 ){
 
-                                float KS1coneSize1 = sqrt((6.28 + delta_ks1_phi)*(6.28 + delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
+                            float KS1coneSize1 = sqrt((6.28 + delta_ks1_phi)*(6.28 + delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
 
-                            }
-                            else{
+                        }
+                        else{
 
-                                float KS1coneSize = sqrt((delta_ks1_phi)*(delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
-                            }
+                            float KS1coneSize = sqrt((delta_ks1_phi)*(delta_ks1_phi)+(delta_ks1_eta)*(delta_ks1_eta));
+                        }
 
-                            float delta_ks2_eta = (jet_eta[i]) - (ks_dau2_eta[x]);
-                            float delta_ks2_phi = (jet_phi[i]) - (ks_dau2_phi[x]);
+                        float delta_ks2_eta = (jet_eta[i]) - (ks_dau2_eta[x]);
+                        float delta_ks2_phi = (jet_phi[i]) - (ks_dau2_phi[x]);
 
-                            if ( delta_ks2_phi > 3.14 ){
+                        if ( delta_ks2_phi > 3.14 ){
 
-                                float KS2coneSize2 = sqrt((6.28 - delta_ks2_phi)*(6.28 - delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
-                            }
-                            else if ( delta_ks2_phi < -3.14 ){
+                            float KS2coneSize2 = sqrt((6.28 - delta_ks2_phi)*(6.28 - delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
+                        }
+                        else if ( delta_ks2_phi < -3.14 ){
 
-                                float KS2coneSize2 = sqrt((6.28 + delta_ks2_phi)*(6.28 + delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
+                            float KS2coneSize2 = sqrt((6.28 + delta_ks2_phi)*(6.28 + delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
 
-                            }
-                            else{
+                        }
+                        else{
 
-                                float KS2coneSize = sqrt((delta_ks2_phi)*(delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
-                            }
+                            float KS2coneSize = sqrt((delta_ks2_phi)*(delta_ks2_phi)+(delta_ks2_eta)*(delta_ks2_eta));
+                        }
 
 
-                                    if ( ks_pt[x] > 0.7 && ks_pt[x] < 1.0 ){
+                                if ( ks_pt[x] > 0.7 && ks_pt[x] < 1.0 ){
 
-                                        k0Hist[0]->Fill( KS1coneSize );
-                                        k0Hist[0]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[0]->Fill( KS1coneSize );
+                                    k0Hist[0]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 1.0 && ks_pt[x] < 1.4 ){
+                                if ( ks_pt[x] > 1.0 && ks_pt[x] < 1.4 ){
 
-                                        k0Hist[1]->Fill( KS1coneSize );
-                                        k0Hist[1]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[1]->Fill( KS1coneSize );
+                                    k0Hist[1]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 1.4 && ks_pt[x] < 1.8 ){
+                                if ( ks_pt[x] > 1.4 && ks_pt[x] < 1.8 ){
 
-                                        k0Hist[2]->Fill( KS1coneSize );
-                                        k0Hist[2]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[2]->Fill( KS1coneSize );
+                                    k0Hist[2]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 1.8 && ks_pt[x] < 2.2 ){
+                                if ( ks_pt[x] > 1.8 && ks_pt[x] < 2.2 ){
 
-                                        k0Hist[3]->Fill( KS1coneSize );
-                                        k0Hist[3]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[3]->Fill( KS1coneSize );
+                                    k0Hist[3]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 2.2 && ks_pt[x] < 2.8 ){
+                                if ( ks_pt[x] > 2.2 && ks_pt[x] < 2.8 ){
 
-                                        k0Hist[4]->Fill( KS1coneSize );
-                                        k0Hist[4]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[4]->Fill( KS1coneSize );
+                                    k0Hist[4]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 2.8 && ks_pt[x] < 3.6 ){
+                                if ( ks_pt[x] > 2.8 && ks_pt[x] < 3.6 ){
 
-                                        k0Hist[5]->Fill( KS1coneSize );
-                                        k0Hist[5]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[5]->Fill( KS1coneSize );
+                                    k0Hist[5]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 3.6 && ks_pt[x] < 4.6 ){
+                                if ( ks_pt[x] > 3.6 && ks_pt[x] < 4.6 ){
 
-                                        k0Hist[6]->Fill( KS1coneSize );
-                                        k0Hist[6]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[6]->Fill( KS1coneSize );
+                                    k0Hist[6]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 4.6 && ks_pt[x] < 6.0 ){
+                                if ( ks_pt[x] > 4.6 && ks_pt[x] < 6.0 ){
 
-                                        k0Hist[7]->Fill( KS1coneSize );
-                                        k0Hist[7]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[7]->Fill( KS1coneSize );
+                                    k0Hist[7]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 6.0 && ks_pt[x] < 9.0 ){
+                                if ( ks_pt[x] > 6.0 && ks_pt[x] < 9.0 ){
 
-                                        k0Hist[8]->Fill( KS1coneSize );
-                                        k0Hist[8]->Fill( KS2coneSize );
-                                    }
+                                    k0Hist[8]->Fill( KS1coneSize );
+                                    k0Hist[8]->Fill( KS2coneSize );
+                                }
 
-                                    if ( ks_pt[x] > 9.0 && ks_pt[x] < 12.0 ){
+                                if ( ks_pt[x] > 9.0 && ks_pt[x] < 12.0 ){
 
-                                        k0Hist[9]->Fill( KS1coneSize );
-                                        k0Hist[9]->Fill( KS2coneSize );
-                                    } 
+                                    k0Hist[9]->Fill( KS1coneSize );
+                                    k0Hist[9]->Fill( KS2coneSize );
+                                } 
                         }   
 
                 }
@@ -574,116 +575,135 @@ void jetConeEfficiency_Regit_check1(){
 
                         }
 
-                        if ( LAconeSize < 0.3 ){
+                    if ( LAconeSize < 0.3 ){
 
-                            float delta_la1_eta = (jet_eta[i]) - (la_dau1_eta[x]);
-                            float delta_la1_phi = (jet_phi[i]) - (la_dau1_phi[x]);
+                        float delta_la1_eta = (jet_eta[i]) - (la_dau1_eta[x]);
+                        float delta_la1_phi = (jet_phi[i]) - (la_dau1_phi[x]);
 
-                            if ( delta_la1_phi > 3.14 ){
+                        if ( delta_la1_phi > 3.14 ){
 
-                                float LA1coneSize = sqrt((6.28 - delta_la1_phi)*(6.28 - delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
-                            }
-                            else if ( delta_la1_phi < -3.14 ){
+                            float LA1coneSize = sqrt((6.28 - delta_la1_phi)*(6.28 - delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
+                        }
+                        else if ( delta_la1_phi < -3.14 ){
 
-                                float LA1coneSize = sqrt((6.28 + delta_la1_phi)*(6.28 + delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
-
-                            }
-                            else{
-
-                                float LA1coneSize = sqrt((delta_la1_phi)*(delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
-                            }
-
-                            float delta_la2_eta = (jet_eta[i]) - (la_dau2_eta[x]);
-                            float delta_la2_phi = (jet_phi[i]) - (la_dau2_phi[x]);
-
-                            if ( delta_la2_phi > 3.14 ){
-
-                                float LA2coneSize = sqrt((6.28 - delta_la2_phi)*(6.28 - delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
-                            }
-                            else if ( delta_la2_phi < -3.14 ){
-
-                                float LA2coneSize = sqrt((6.28 + delta_la2_phi)*(6.28 + delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
-
-                            }
-                            else{
-
-                                float LA2coneSize = sqrt((delta_la2_phi)*(delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
-                            }
-
-
-                                    if ( la_pt[x] > 0.7 && la_pt[x] < 1.0 ){
-
-                                        laHist[0]->Fill( LA1coneSize );
-                                        laHist[0]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 1.0 && la_pt[x] < 1.4 ){
-
-                                        laHist[1]->Fill( LA1coneSize );
-                                        laHist[1]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 1.4 && la_pt[x] < 1.8 ){
-
-                                        laHist[2]->Fill( LA1coneSize );
-                                        laHist[2]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 1.8 && la_pt[x] < 2.2 ){
-
-                                        laHist[3]->Fill( LA1coneSize );
-                                        laHist[3]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 2.2 && la_pt[x] < 2.8 ){
-
-                                        laHist[4]->Fill( LA1coneSize );
-                                        laHist[4]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 2.8 && la_pt[x] < 3.6 ){
-
-                                        laHist[5]->Fill( LA1coneSize );
-                                        laHist[5]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 3.6 && la_pt[x] < 4.6 ){
-
-                                        laHist[6]->Fill( LA1coneSize );
-                                        laHist[6]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 4.6 && la_pt[x] < 6.0 ){
-
-                                        laHist[7]->Fill( LA1coneSize );
-                                        laHist[7]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 6.0 && la_pt[x] < 9.0 ){
-
-                                        laHist[8]->Fill( LA1coneSize );
-                                        laHist[8]->Fill( LA2coneSize );
-                                    }
-
-                                    if ( la_pt[x] > 9.0 && la_pt[x] < 12.0 ){
-
-                                        laHist[9]->Fill( LA1coneSize );
-                                        laHist[9]->Fill( LA2coneSize );
-                                    } 
+                            float LA1coneSize = sqrt((6.28 + delta_la1_phi)*(6.28 + delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
 
                         }
+                        else{
+
+                            float LA1coneSize = sqrt((delta_la1_phi)*(delta_la1_phi)+(delta_la1_eta)*(delta_la1_eta));
+                        }
+
+                        float delta_la2_eta = (jet_eta[i]) - (la_dau2_eta[x]);
+                        float delta_la2_phi = (jet_phi[i]) - (la_dau2_phi[x]);
+
+                        if ( delta_la2_phi > 3.14 ){
+
+                            float LA2coneSize = sqrt((6.28 - delta_la2_phi)*(6.28 - delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
+                        }
+                        else if ( delta_la2_phi < -3.14 ){
+
+                            float LA2coneSize = sqrt((6.28 + delta_la2_phi)*(6.28 + delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
+
+                        }
+                        else{
+
+                            float LA2coneSize = sqrt((delta_la2_phi)*(delta_la2_phi)+(delta_la2_eta)*(delta_la2_eta));
+                        }
+
+
+                                if ( la_pt[x] > 0.7 && la_pt[x] < 1.0 ){
+
+                                    laHist[0]->Fill( LA1coneSize );
+                                    laHist[0]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 1.0 && la_pt[x] < 1.4 ){
+
+                                    laHist[1]->Fill( LA1coneSize );
+                                    laHist[1]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 1.4 && la_pt[x] < 1.8 ){
+
+                                    laHist[2]->Fill( LA1coneSize );
+                                    laHist[2]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 1.8 && la_pt[x] < 2.2 ){
+
+                                    laHist[3]->Fill( LA1coneSize );
+                                    laHist[3]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 2.2 && la_pt[x] < 2.8 ){
+
+                                    laHist[4]->Fill( LA1coneSize );
+                                    laHist[4]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 2.8 && la_pt[x] < 3.6 ){
+
+                                    laHist[5]->Fill( LA1coneSize );
+                                    laHist[5]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 3.6 && la_pt[x] < 4.6 ){
+
+                                    laHist[6]->Fill( LA1coneSize );
+                                    laHist[6]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 4.6 && la_pt[x] < 6.0 ){
+
+                                    laHist[7]->Fill( LA1coneSize );
+                                    laHist[7]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 6.0 && la_pt[x] < 9.0 ){
+
+                                    laHist[8]->Fill( LA1coneSize );
+                                    laHist[8]->Fill( LA2coneSize );
+                                }
+
+                                if ( la_pt[x] > 9.0 && la_pt[x] < 12.0 ){
+
+                                    laHist[9]->Fill( LA1coneSize );
+                                    laHist[9]->Fill( LA2coneSize );
+                                } 
+
+                    }
        
-                    } 
+                } 
                     
-                }  
+            }  
                 
         }
+
+//pT range;
+
+    char* pTrange[10];
+    pTrange[0] = "0.7 < pT < 1.0";
+    pTrange[1] = "1.0 < pT < 1.4";
+    pTrange[2] = "1.4 < pT < 1.8";
+    pTrange[3] = "1.8 < pT < 2.2";
+    pTrange[4] = "2.2 < pT < 2.8";
+    pTrange[5] = "2.8 < pT < 3.6";
+    pTrange[6] = "3.6 < pT < 4.6";
+    pTrange[7] = "4.6 < pT < 6.0";
+    pTrange[8] = "6.0 < pT < 9.0";
+    pTrange[9] = "9.0 < pT < 12.0";
 
     TCanvas* c1 = new TCanvas();
     c1->Print("k0_Daughter_DeltaR_0.3.pdf[");
         for (int r = 0; r < 10; r++){
 
+            k0Hist[r]->SetStats(kFALSE);
             k0Hist[r]->Draw();
+            TLatex* tlx=new TLatex(0.6, 0.8, pTrange[r] );
+            tlx->SetNDC(kTRUE); // <- use NDC coordinate
+            tlx->SetTextSize(0.06);
+            tlx->Draw("same");
             c1->Print("k0_Daughter_DeltaR_0.3.pdf");
 
         }
@@ -693,7 +713,12 @@ void jetConeEfficiency_Regit_check1(){
     c2->Print("la_Daughter_DeltaR_0.3.pdf[");
     for (int w = 0; w < 10; w++){
 
+        laHist[w]->SetStats(kFALSE);
         laHist[w]->Draw();
+        TLatex* tlx1=new TLatex(0.6, 0.8, pTrange[w] );
+        tlx1->SetNDC(kTRUE); // <- use NDC coordinate
+        tlx1->SetTextSize(0.06);
+        tlx1->Draw("same");
         c2->Print("la_Daughter_DeltaR_0.3.pdf");
 
     }
